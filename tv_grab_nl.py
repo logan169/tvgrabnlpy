@@ -615,19 +615,19 @@ def get_channel_all_days(channel, days, quiet=0):
         if isinstance(v, dict):
                 v=list(v.values())
         for r in v:
-                program_url  = 'http://www.tvgids.nl/programma/' + r['db_id'] + '/'
-                tdict = {}
-                tdict['start'] = r['datum_start'][10:-3]
-                tdict['stop']  = r['datum_end'][10:-3]
-                tdict['name']  = r['titel']
-                if tdict['name'] == '':
-                        dict['name'] = 'onbekend'
-                tdict['url']   = program_url
-                tdict['ID']    = r['db_id']
-                tdict['offset'] = offset
-                tdict['genre'] = r['genre']
-                # and append the program to the list of programs
-                programs.append(tdict)
+            program_url  = 'http://www.tvgids.nl/programma/' + r['db_id'] + '/'
+            tdict = {}
+            tdict['start'] =  r['datum_start']
+            tdict['stop']  = r['datum_end']
+            tdict['name']  = r['titel']
+            if tdict['name'] == '':
+                dict['name'] = 'onbekend'
+            tdict['url']   = program_url
+            tdict['ID']    = r['db_id']
+            tdict['offset'] = offset
+            tdict['genre'] = r['genre']
+            # and append the program to the list of programs
+            programs.append(tdict)
     # done
     return programs
 
@@ -654,20 +654,12 @@ def make_daytime(time_string, offset=0, cutoff='00:00', stoptime=False):
     Out[5]:datetime.datetime(2006, 8, 4, 11, 34)
 
     """
-    h,m = [int(x) for x in time_string.split(':')];
-    hm = int(time_string.replace(':',''))
-    chm = int(cutoff.replace(':',''))
+    d,t=time_string.split(' ')
+    y,mo,d = [int(x) for x in d.split('-')];
+    h,mi,s = [int(x) for x in t.split(':')];
+   
+    dt = datetime.datetime(y,mo,d,h,mi)
 
-    # check for the cutoff, if the time is before the cutoff then 
-    # add a day
-    extra_day = 0
-    if (hm < chm) or (stoptime==True and hm == chm):
-        extra_day = 1
-
-    # and create a datetime object, DST is handled at a later point
-    pt = time.localtime()
-    dt = datetime.datetime(pt[0],pt[1],pt[2],h,m)
-    dt = dt + datetime.timedelta(offset+extra_day)
     return dt
 
 def correct_times(programs, quiet=0):
