@@ -1185,10 +1185,10 @@ def main():
 
     # check Python version
     if sys.version_info[:2] < (2,6):
-        log("tv_grab_nl_py requires Pyton 2.6 or higher\n")
+        log("tv_grab_nl_py requires Python 2.6 or higher\n")
         return(2)
     elif sys.version_info[:2] >= (3,0):
-        log("tv_grab_nl_py does not yet support Pyton 3 or higher.\nExpect errors while we proceed\n")
+        log("tv_grab_nl_py does not yet support Python 3 or higher.\nExpect errors while we proceed\n")
 
     # hpath = ''
     xmltv_dir   = hpath+'/.xmltv'
